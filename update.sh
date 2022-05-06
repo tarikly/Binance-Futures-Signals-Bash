@@ -10,11 +10,11 @@ do
     esac
 done
 
+[ -d "REPO_DIR" ] && mv $REPO_DIR-rollback
+git clone https://github.com/lagoanova/Binance-Futures-Signals.git $ROOT_DIR
 
 case $1 in
-     -u|--user)
-          mv $REPO_DIR $REPO_DIR/$USUARIO/Binance-Futures-Signals-rollback
-          git clone https://github.com/lagoanova/Binance-Futures-Signals.git $ROOT_DIR
+     -u|--user)      
           echo "Verificando se diretorio do usuario existe"
           if [ -d "$WORK_DIR/$USUARIO" ]; then
 
