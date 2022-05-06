@@ -2,7 +2,7 @@
 
 export ROOT_DIR=/root
 export WORK_DIR=$(pwd)
-export REPO_DIR=$(pwd)/Binance-Futures-Signals
+export REPO_DIR=$ROOT_DIR/Binance-Futures-Signals
 while getopts :u: flag
 do
     case "${flag}" in
