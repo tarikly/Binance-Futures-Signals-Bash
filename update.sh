@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export BASE_DIR=$(pwd)
+export ROOT_DIR=/root
+export WORK_DIR=$(pwd)
 export REPO_DIR=$(pwd)/Binance-Futures-Signals
 while getopts :u: flag
 do
@@ -12,43 +13,43 @@ done
 
 case $1 in
      -u|--user)
-          #mv $REPO_DIR $REPO_DIR/Binance-Futures-Signals-rollback
+          mv $REPO_DIR $REPO_DIR/Binance-Futures-Signals-rollback
           #echo "Clonando repositório"
           #echo "git clone https://github.com/lagoanova/Binance-Futures-Signals.git"
-          #git clone https://github.com/lagoanova/Binance-Futures-Signals.git
+          git clone https://github.com/lagoanova/Binance-Futures-Signals.git $ROOT_DIR
           echo "Verificando se diretório do usuário existe"
-          if [ -d "$BASE_DIR/$USUARIO" ]; then
+          if [ -d "$WORK_DIR/$USUARIO" ]; then
 
-            cd $BASE_DIR/$USUARIO/Binance-Futures-Signals
+            cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
             echo "Finalizando instância em execução"
             export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO down
-            [ -d "$BASE_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && rm -rf $BASE_DIR/$USUARIO/Binance-Futures-Signals-rollback 
-            mv $BASE_DIR/$USUARIO/Binance-Futures-Signals $BASE_DIR/$USUARIO/Binance-Futures-Signals-rollback
+            [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback 
+            mv $WORK_DIR/$USUARIO/Binance-Futures-Signals $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback
             
           else
 
             echo "Criando novo usuário $USUARIO"
-            mkdir -v $BASE_DIR/$USUARIO
+            mkdir -v $WORK_DIR/$USUARIO
 
           fi
-          cp -av $REPO_DIR $BASE_DIR/$USUARIO/
+          cp -av $REPO_DIR $WORK_DIR/$USUARIO/
           echo "Copiando o arquivo do ambiente .env para o diretorio do usuário"
-          cp -av $BASE_DIR/$USUARIO/.env $BASE_DIR/$USUARIO/Binance-Futures-Signals/
-          cd $BASE_DIR/$USUARIO/Binance-Futures-Signals
+          cp -av $WORK_DIR/$USUARIO/.env $WORK_DIR/$USUARIO/Binance-Futures-Signals/
+          cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
           echo "Iniciando instância"
           export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO up -d
           ;;
 
      -a|--all)
           for i in $(ls); do
-            cd $BASE_DIR/$i/Binance-Futures-Signals
+            cd $WORK_DIR/$i/Binance-Futures-Signals
             export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i down
             echo "O diretório do usuário existe então mova a diretorio atual para rollback e faça a cópia do repo para o diretorio do usuário"
-            [ -d "$BASE_DIR/$i/Binance-Futures-Signals-rollback " ] && rm -rf $BASE_DIR/$i/Binance-Futures-Signals-rollback 
-            mv $BASE_DIR/$i/Binance-Futures-Signals $BASE_DIR/$i/Binance-Futures-Signals-rollback
-            cp -av $REPO_DIR $BASE_DIR/$i/
-            cp -av $BASE_DIR/$USUARIO/.env $BASE_DIR/$i/Binance-Futures-Signals/
-            cd $BASE_DIR/$i/Binance-Futures-Signals
+            [ -d "$WORK_DIR/$i/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$i/Binance-Futures-Signals-rollback 
+            mv $WORK_DIR/$i/Binance-Futures-Signals $WORK_DIR/$i/Binance-Futures-Signals-rollback
+            cp -av $REPO_DIR $WORK_DIR/$i/
+            cp -av $WORK_DIR/$USUARIO/.env $WORK_DIR/$i/Binance-Futures-Signals/
+            cd $WORK_DIR/$i/Binance-Futures-Signals
             export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i up -d
           done
           ;;
