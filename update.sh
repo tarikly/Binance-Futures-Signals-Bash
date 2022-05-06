@@ -10,7 +10,9 @@ do
     esac
 done
 
+[ -d "$REPO_DIR-rollback" ] && rm -rfv $REPO_DIR-rollback
 [ -d "REPO_DIR" ] && mv $REPO_DIR-rollback
+
 git clone https://github.com/lagoanova/Binance-Futures-Signals.git $ROOT_DIR
 
 case $1 in
