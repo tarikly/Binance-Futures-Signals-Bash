@@ -24,12 +24,8 @@ case $1 in
             [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback 
             mv $WORK_DIR/$USUARIO/Binance-Futures-Signals $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback
             
-          else
-
-            echo "Criando novo usuario $USUARIO"
-            mkdir -v $WORK_DIR/$USUARIO
-
           fi
+
           cp -av $REPO_DIR $WORK_DIR/$USUARIO/
           echo "Copiando o arquivo do ambiente .env para o diretorio do usuario"
           cp -av $WORK_DIR/$USUARIO/.env $WORK_DIR/$USUARIO/Binance-Futures-Signals/
