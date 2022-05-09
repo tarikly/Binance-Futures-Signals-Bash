@@ -23,6 +23,8 @@ case $1 in
             cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
             echo "Finalizando instancia em execucao"
             export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO down
+            docker rm  $(docker container ls -qa --filter name=$USUARIO$)
+            docker rmi $(docker images | grep "$USUARIO " | awk '{print $3}')
             [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback 
             mv $WORK_DIR/$USUARIO/Binance-Futures-Signals $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback
           
@@ -46,6 +48,8 @@ case $1 in
           for i in $(ls); do
             cd $WORK_DIR/$i/Binance-Futures-Signals
             export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i down
+            docker rm  $(docker container ls -qa --filter name=$i$)
+            docker rmi $(docker images | grep "$i " | awk '{print $3}')
             echo "O diretorio do usuario existe entao mova a diretorio atual para rollback e faca a capia do repo para o diretorio do usuario"
             [ -d "$WORK_DIR/$i/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$i/Binance-Futures-Signals-rollback 
             mv $WORK_DIR/$i/Binance-Futures-Signals $WORK_DIR/$i/Binance-Futures-Signals-rollback
@@ -63,6 +67,8 @@ case $1 in
               cd $WORK_DIR/$i/Binance-Futures-Signals
               echo "Finalizando instancia em execucao"
               export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i down
+              docker rm  $(docker container ls -qa --filter name=$i*)
+              docker rmi $(docker images | grep "$i " | awk '{print $3}')
               cd $WORK_DIR/$i
               rm -rf $WORK_DIR/$i/Binance-Futures-Signals
               [ -d "$WORK_DIR/$i/Binance-Futures-Signals-rollback " ] && mv $WORK_DIR/$i/Binance-Futures-Signals
@@ -75,6 +81,8 @@ case $1 in
             cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
             echo "Finalizando instancia em execucao"
             export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO down
+            docker rm  $(docker container ls -qa --filter name=$USUARIO*)
+            docker rmi $(docker images | grep "$USUARIO " | awk '{print $3}')
             cd $WORK_DIR/$USUARIO
             rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals
             [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && mv $WORK_DIR/$USUARIO/Binance-Futures-Signals
