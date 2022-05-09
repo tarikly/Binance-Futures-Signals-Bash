@@ -23,7 +23,6 @@ case $1 in
             cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
             echo "Finalizando instancia em execucao"
             export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO down
-            docker inspect --format {{.Image}} $(docker ps | grep $USUARIO | awk '{print $1}') | cut -f 2 -d ":"
             [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback 
             mv $WORK_DIR/$USUARIO/Binance-Futures-Signals $WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback
           
