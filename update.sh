@@ -56,12 +56,31 @@ case $1 in
           done
           ;;
       -r|--rollback)
-         if [[ ! -z USUARIO ]];
-         then
-           echo variavel nao existe!
-         else
-           echo variavel existe!
-        fi
+          if [[ ! -z USUARIO ]];
+          then
+            echo variavel nao existe!
+            for i in $(ls); do
+              cd $WORK_DIR/$i/Binance-Futures-Signals
+              echo "Finalizando instancia em execucao"
+              export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i down
+              cd $WORK_DIR/$i
+              rm -rf $WORK_DIR/$i/Binance-Futures-Signals
+              [ -d "$WORK_DIR/$i/Binance-Futures-Signals-rollback " ] && mv $WORK_DIR/$i/Binance-Futures-Signals
+              cd $WORK_DIR/$i/Binance-Futures-Signals
+              export TAG="`git rev-parse --short=10 HEAD`-$i" && docker compose --project-name $i up -d
+            done
+            
+          else
+            echo variavel existe!
+            cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
+            echo "Finalizando instancia em execucao"
+            export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO down
+            cd $WORK_DIR/$USUARIO
+            rm -rf $WORK_DIR/$USUARIO/Binance-Futures-Signals
+            [ -d "$WORK_DIR/$USUARIO/Binance-Futures-Signals-rollback " ] && mv $WORK_DIR/$USUARIO/Binance-Futures-Signals
+            cd $WORK_DIR/$USUARIO/Binance-Futures-Signals
+            export TAG="`git rev-parse --short=10 HEAD`-$USUARIO" && docker compose --project-name $USUARIO up -d
+          fi
 
         ;;
      *)
