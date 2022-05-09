@@ -11,7 +11,7 @@ do
 done
 
 [ -d "$REPO_DIR-rollback" ] && mv $REPO_DIR-bkp-$(date '+%d-m-%Y_%H-%M')
-[ -d "REPO_DIR" ] && mv $REPO_DIR-rollback
+[ -d "$REPO_DIR" ] && mv $REPO_DIR-rollback
 
 #git clone https://username:password@github.com/lagoanova/Binance-Futures-Signals.git $ROOT_DIR
 
